@@ -1,9 +1,9 @@
 package com.mode.api;
 
+import java.security.Principal;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +33,8 @@ public class MainAPI {
     private final AtomicLong counter = new AtomicLong();
 
     @RequestMapping("/greeting")
-    public Greeting greeting(@AuthenticationPrincipal User user) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, user.getUsername()));
+    public Greeting greeting(Principal user) {
+        return new Greeting(counter.incrementAndGet(), String.format(template, user.toString()));
     }
 
     public class Greeting {

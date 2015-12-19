@@ -22,8 +22,9 @@ public class LogoutSuccessHandler
         extends AbstractAuthenticationTargetUrlRequestHandler
         implements org.springframework.security.web.authentication.logout.LogoutSuccessHandler {
 
-    private static final String BEARER_AUTHENTICATION = "Bearer";
-    private static final String HEADER_AUTHORIZATION = "authorization";
+    // Please don't change these two constants below!!
+    private static final String BEARER_AUTHENTICATION = "Bearer ";
+    private static final String HEADER_AUTHORIZATION = "Authorization";
 
     @Autowired
     private TokenStore tokenStore;
@@ -36,7 +37,7 @@ public class LogoutSuccessHandler
 
         String token = request.getHeader(HEADER_AUTHORIZATION);
         if (token != null && token.startsWith(BEARER_AUTHENTICATION)) {
-            OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token.split(" ")[0]);
+            OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token.replace("Bearer", "").trim());
             if (oAuth2AccessToken != null) {
                 tokenStore.removeAccessToken(oAuth2AccessToken);
             }
